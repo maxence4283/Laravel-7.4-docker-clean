@@ -1,0 +1,22 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito:200,600");
+
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+
+// Bootstrap
+@import "bootstrap";
+
+// Select2
+@import "~select2/src/scss/core";
+@import "~select2-theme-bootstrap4/src/select2-bootstrap";
+
+// DataTable
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+
+//// Pages
+@import "_pages/page";
+
