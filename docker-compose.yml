@@ -1,23 +1,8 @@
 version: "3.7"
-services:
-  app:
-    build:
-      args:
-        user: apel
-        uid: 1000
-      context: ./
-      dockerfile: Dockerfile
-    image: apel
-    container_name: apel-app
-    restart: unless-stopped
-    working_dir: /var/www/html
-    volumes:
-      - ./:/var/www/html
-    networks:
-      - apel
 
+services:
   mysql:
-    image: mysql
+    build: docker-compose/mysql
     container_name: apel-mysql
     environment:
       MYSQL_ROOT_PASSWORD: secret
@@ -25,9 +10,26 @@ services:
       MYSQL_PASSWORD: laravel
       MYSQL_DATABASE: apel
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./docker-compose/mysql:/var/lib/mysql
     ports:
       - "3306:3306"
+
+  redis:
+    build: docker-compose/redis
+    container_name: apel-redis
+    volumes:
+      - ./docker-compose/mysql:/data
+
+  app:
+    build: docker-compose/engine
+    container_name: apel-app
+    volumes:
+      - ./:/var/www/html
+    entrypoint:
+      - php-fpm
+    links:
+      - mysql
+      - redis
 
   nginx:
     image: nginx:alpine
@@ -38,8 +40,8 @@ services:
     volumes:
       - ./:/var/www/html
       - ./docker-compose/nginx:/etc/nginx/conf.d/
-    networks:
-      - apel
+    links:
+      - app
 
   phpmyadmin:
     image: nazarpc/phpmyadmin
@@ -49,6 +51,4 @@ services:
     ports:
       - "8080:80"
 
-networks:
-  apel:
-    driver: bridge
+

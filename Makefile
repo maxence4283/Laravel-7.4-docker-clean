@@ -36,4 +36,4 @@ npm:
 	docker-compose exec app npm run watch
 
 ssh:
-	docker-compose exec app bash
+	docker-compose exec app sh
